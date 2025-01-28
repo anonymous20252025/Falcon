@@ -3,7 +3,6 @@
 # Falcon: A Remote Sensing Vision-Language Foundation Model
 
 
-
 [\[🚀 Quick Start\]](#quick-start-with-Falcon)
 
 
