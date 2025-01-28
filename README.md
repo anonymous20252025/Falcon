@@ -19,7 +19,7 @@ We are excited to introduce Falcon, which offers a unified, prompt-based paradig
 
 ## News 🚀🚀🚀
 
-- `2024/11/27`: Falcon has been released. The model checkpoints is now available on HuggingFace & modelscope, and both training / evaluation scripts and The FCD-78M dataset are open-sourced.
+- `2024/11/27`: Falcon has been released. The model checkpoints is now available on HuggingFace, and both training / evaluation scripts and The FCD-78M dataset are open-sourced.
 
 
 ## Model Zoo
@@ -70,7 +70,7 @@ pip install -r requirements.txt
 <details>
   <summary>Inference on 14 tasks (click to expand)</summary>
 
-Here we provide 14 example scripts to demonstrate how to use Falcon to perform inference on 14 tasks. We provide many image samples in [here](https://www.modelscope.cn/datasets/TianHuiLab/FCD-78M) for you to try with.
+Here we provide 14 example scripts to demonstrate how to use Falcon to perform inference on 14 tasks. We provide many image samples in [here](https://github.com/anonymous20252025/Falcon/tree/main/image_samples) for you to try with.
 
 ```bash
 # Inference for Image Classification task
