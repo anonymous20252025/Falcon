@@ -1,0 +1,16 @@
+model_checkpoints
+Datasets
+wandb/
+__pycache__/
+qa_json
+pytorch_model.bin
+.vscode
+Florence-2*
+inference
+runs
+test_images
+visualization_lab
+Falcon-Single-Instruction-Base
+Falcon-Single-Instruction-Large
+Falcon-Multi-Instruction-Large
+FCD
