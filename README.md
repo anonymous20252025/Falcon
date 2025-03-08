@@ -18,7 +18,7 @@ We are excited to introduce Falcon, which offers a unified, prompt-based paradig
 
 ## News 🚀🚀🚀
 
-- `2024/11/27`: Falcon has been released. The model checkpoints is now available on HuggingFace, and both training / evaluation scripts and The FCD-78M dataset are open-sourced.
+- `2024/11/27`: Falcon has been released. The model checkpoints is now available on HuggingFace, and both training / evaluation scripts and The Falcon_SFT dataset are open-sourced.
 
 
 ## Model Zoo
@@ -46,8 +46,8 @@ We are excited to introduce Falcon, which offers a unified, prompt-based paradig
   </tr>
 </table>
 
-## FCD-78M
-The dataset FCD-78M can be found in [here](https://www.modelscope.cn/datasets/TianHuiLab/FCD-78M).
+## Falcon_SFT
+The dataset Falcon_SFT can be found in [here](https://www.modelscope.cn/datasets/TianHuiLab/FCD-78M).
 
 ## What can Falcon do?
 ![opencompass](assets/task_example.png)
@@ -211,7 +211,7 @@ Unzip and place/link the dataset at the root path of this repo. The directory st
 </details>
 
 <details>
-  <summary>Training Falcon with FCD-78M (click to expand)</summary>
+  <summary>Training Falcon with Falcon_SFT (click to expand)</summary>
 
 1. Download the checkpoints you want and place them at the root path of this repo. The directory structure should be as follows:
 ```bash
@@ -241,7 +241,7 @@ python multi_node_distributed_train.py \
     --master_addr $MASTER_ADDR \
     --master_port $MASTER_PORT \
     --checkpoint_path <path_to_the_checkpoint_you_want> \
-    --dataset FCD-78M \
+    --dataset Falcon_SFT \
     --label_json FCD/json_train_taskall/train_task14_all.json \
     --num_workers 2 \
     --batch_size 7 \
@@ -251,16 +251,16 @@ python multi_node_distributed_train.py \
 </details>
 
 <details>
-  <summary>Evaluating Falcon with FCD-78M (click to expand)</summary>
+  <summary>Evaluating Falcon with Falcon_SFT (click to expand)</summary>
 
-1. Here we provide an example of the evaluation program to evaluate Falcon using FCD-78M dataset with the json annotation file.
+1. Here we provide an example of the evaluation program to evaluate Falcon using Falcon_SFT dataset with the json annotation file.
 
 ```bash
 GPU=0
 CUDA_VISIBLE_DEVICES=$GPU python single_gpu_inference_eval.py \
     --model-path model_checkpoints/<checkpoint_dir_name> \
     --eval-file FCD/<task_dir>/test/Annotation_test.json \
-    --dataset-path FCD-78M \
+    --dataset-path Falcon_SFT \
     --model-name Falcon \
     --result-path ./ \
     --batch_size 8 \

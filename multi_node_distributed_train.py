@@ -160,10 +160,10 @@ def train_model(
         run_name = fw.generate(2, separator="_")
 
     # Load the dataset based on the dataset_name argument
-    if dataset_name == "FCD-78M":
+    if dataset_name == "Falcon_SFT":
         train_dataset = RSDataset(split="train", json_file=json_file)
         val_datasets = {
-            "FCD-78M": RSDataset(split="test", json_file=json_file),
+            "Falcon_SFT": RSDataset(split="test", json_file=json_file),
         }
     else:
         raise ValueError(f"Unknown dataset: {dataset_name}")

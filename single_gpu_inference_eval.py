@@ -103,21 +103,22 @@ class RSDataset(Dataset):
             try:
                 image_path = os.path.join(self.root_path, f"{image_id2}")
                 image2 = Image.open(image_path).convert("RGB")
-                
+
                 if crop != []:
                     image2 = image2.crop(tuple(crop))
-    
+
                 img1 = np.array(image)
                 img2 = np.array(image2)
                 img = np.zeros(img1.shape)
-                half1 = np.concatenate((img1, img),axis=0)
-                half2 = np.concatenate((img, img2),axis=0)
-                image = np.concatenate((half1, half2),axis=1)
-                image = Image.fromarray(np.uint8(image))        
+                half1 = np.concatenate((img1, img), axis=0)
+                half2 = np.concatenate((img, img2), axis=0)
+                image = np.concatenate((half1, half2), axis=1)
+                image = Image.fromarray(np.uint8(image))
             except:
-                print("can not find/open {}".format(image_dir))
-        
+                print("can not find/open {}".format(image_path))
+
         return image_dirs, prompt, label, image, crop
+
 
 def seed_everything(seed=11):
     random.seed(seed)
@@ -134,6 +135,7 @@ def load_json_data(eval_file_path):
         json_data = json.load(file)
     return json_data
 
+
 # Function to extract region of interest (ROI) bounding boxes using regex patterns
 def extract_roi(input_string, pattern=r"\{<(\d+)><(\d+)><(\d+)><(\d+)>\|<(\d+)>"):
     # Regular expression pattern to capture the required groups
@@ -145,6 +147,7 @@ def extract_roi(input_string, pattern=r"\{<(\d+)><(\d+)><(\d+)><(\d+)>\|<(\d+)>"
     extracted_values = [match for match in matches]
 
     return extracted_values
+
 
 # Function to extract polygons from model-generated text
 def extract_polygons(generated_text, image_size, coordinates_quantizer):
@@ -245,8 +248,8 @@ def eval_model(args):
 
     model_name = args.model_name
     print(model_name)
-    
-    save_path = os.path.join(result_path,model_name)
+
+    save_path = os.path.join(result_path, model_name)
     # today = datetime.date.today().strftime("%y%m%d")
     # save_path = os.path.join(result_path, model_name + "-" + today)
 
@@ -270,8 +273,7 @@ def eval_model(args):
         task = (
             json_data[0]["conversations"][0]["content"].split("]\n")[0].split("\n[")[-1]
         )
-        dataset_name = json_data[0]['images'][0].split('/')[0]
-        
+        dataset_name = json_data[0]["images"][0].split("/")[0]
 
         print("Inference for ", dataset_name)
 
@@ -300,9 +302,9 @@ def eval_model(args):
                         "REG_DET_HBB",
                         "REG_DET_OBB",
                         "PIX_SEG",
-                        'PIX_CHG'
+                        "PIX_CHG",
                     ]:
-                        if task == "REG_DET_OBB":     # obb detection
+                        if task == "REG_DET_OBB":  # obb detection
                             pred_bboxes = extract_roi(
                                 generated_text,
                                 pattern=r"<(\d+)><(\d+)><(\d+)><(\d+)><(\d+)><(\d+)><(\d+)><(\d+)>",
@@ -330,12 +332,18 @@ def eval_model(args):
                             label = []
                             for bbox in ground_roi:
                                 label.append(list(bbox))
-                        elif task == "PIX_SEG" or task == 'PIX_CHG':  # segmentation and change detection
+                        elif (
+                            task == "PIX_SEG" or task == "PIX_CHG"
+                        ):  # segmentation and change detection
                             gt_polygons = extract_polygons(
-                                label, (image.width, image.height), coordinates_quantizer
+                                label,
+                                (image.width, image.height),
+                                coordinates_quantizer,
                             )
                             pred_polygons = extract_polygons(
-                                generated_text, (image.width, image.height), coordinates_quantizer
+                                generated_text,
+                                (image.width, image.height),
+                                coordinates_quantizer,
                             )
                             answer = pred_polygons
                             label = gt_polygons
@@ -343,11 +351,16 @@ def eval_model(args):
                             print("Unknown task ", task)
 
                     else:
-                        answer = generated_text.replace("</s>", "").replace("<s>", "").replace('<pad>','').replace('</pad>','')
+                        answer = (
+                            generated_text.replace("</s>", "")
+                            .replace("<s>", "")
+                            .replace("<pad>", "")
+                            .replace("</pad>", "")
+                        )
 
                     result = dict()
                     result["image"] = image_id
-                    result['crop'] = crop
+                    result["crop"] = crop
                     result["question"] = prompt
                     result["answer"] = answer
                     result["gt"] = label
@@ -357,7 +370,7 @@ def eval_model(args):
         final_out["info"] = {"task": task, "model": model_name, "dataset": dataset_name}
         final_out["data"] = predict_results
 
-        save_file_name = eval_file_path.split('/')[-1]
+        save_file_name = eval_file_path.split("/")[-1]
         file_save_path = os.path.join(save_path, save_file_name)
         with open(file_save_path, "w") as f:
             f.write(json.dumps(final_out, indent=4))
@@ -368,8 +381,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, help="checkpoint path")
     parser.add_argument("--eval-file", type=str, help="the evaluation json file")
-    parser.add_argument("--dataset-path", type=str, help="root path of the evaluation data")
-    parser.add_argument("--model-name", type=str, default="eval_model", help="specify the model name")
+    parser.add_argument(
+        "--dataset-path", type=str, help="root path of the evaluation data"
+    )
+    parser.add_argument(
+        "--model-name", type=str, default="eval_model", help="specify the model name"
+    )
     parser.add_argument("--result-path", type=str, default="./")
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--num-workers", type=int, default=2)
