@@ -260,7 +260,6 @@ GPU=0
 CUDA_VISIBLE_DEVICES=$GPU python single_gpu_inference_eval.py \
     --model-path model_checkpoints/<checkpoint_dir_name> \
     --eval-file FCD/<task_dir>/test/Annotation_test.json \
-    --dataset-path Falcon_SFT \
     --model-name Falcon \
     --result-path ./ \
     --batch_size 8 \

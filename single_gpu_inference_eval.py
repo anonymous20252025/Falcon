@@ -74,7 +74,6 @@ class RSDataset(Dataset):
 
     def __init__(self, args, data):
         self.data = data
-        self.root_path = args.dataset_path
 
     def __len__(self):
         return len(self.data)
@@ -91,7 +90,7 @@ class RSDataset(Dataset):
         )
         label = ann["conversations"][1]["content"]
 
-        image_path = os.path.join(self.root_path, f"{image_id}")
+        image_path = image_id
         image = Image.open(image_path).convert("RGB")
 
         if crop != []:
@@ -101,7 +100,7 @@ class RSDataset(Dataset):
         if len(image_dirs) == 2:
             image_id2 = ann["images"][1]
             try:
-                image_path = os.path.join(self.root_path, f"{image_id2}")
+                image_path = image_id2
                 image2 = Image.open(image_path).convert("RGB")
 
                 if crop != []:
@@ -381,9 +380,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, help="checkpoint path")
     parser.add_argument("--eval-file", type=str, help="the evaluation json file")
-    parser.add_argument(
-        "--dataset-path", type=str, help="root path of the evaluation data"
-    )
     parser.add_argument(
         "--model-name", type=str, default="eval_model", help="specify the model name"
     )
