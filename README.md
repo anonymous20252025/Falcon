@@ -47,7 +47,7 @@ We are excited to introduce Falcon, which offers a unified, prompt-based paradig
 </table>
 
 ## Falcon_SFT
-The dataset Falcon_SFT can be found in [here](https://www.modelscope.cn/datasets/TianHuiLab/FCD-78M).
+The dataset Falcon_SFT can be found in [here](https://pan.baidu.com/s/1eUvA4na59O6aIpjPyEwouQ). (access code: 32a7)
 
 ## What can Falcon do?
 ![opencompass](assets/task_example.png)
